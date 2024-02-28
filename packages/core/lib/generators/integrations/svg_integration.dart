@@ -15,6 +15,7 @@ class SvgIntegration extends Integration {
         'package:flutter/widgets.dart',
         'package:flutter_svg/flutter_svg.dart',
         'package:flutter/services.dart',
+        'package:vector_graphics/vector_graphics.dart',
       ];
 
   @override
@@ -49,6 +50,25 @@ ${isPackage ? "\n  static const String package = '$packageName';" : ''}
     @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
     @deprecated bool cacheColorFilter = false,
   }) {
+    if(_assetName.endsWith('.vec')) {
+      return SvgPicture(
+        AssetBytesLoader(_assetName, packageName: package, assetBundle: bundle),
+        key: key,
+        matchTextDirection: matchTextDirection,
+        width: width,
+        height: height,
+        fit: fit,
+        alignment: alignment,
+        allowDrawingOutsideViewBox: allowDrawingOutsideViewBox,
+        placeholderBuilder: placeholderBuilder,
+        semanticsLabel: semanticsLabel,
+        excludeFromSemantics: excludeFromSemantics,
+        theme: theme,
+        colorFilter: colorFilter,
+        clipBehavior: clipBehavior,
+      );
+    }
+
     return SvgPicture.asset(
       _assetName,
       key: key,
@@ -107,7 +127,9 @@ ${isPackage ? "\n  static const String package = '$packageName';" : ''}
   }
 
   @override
-  bool isSupport(AssetType asset) => asset.mime == 'image/svg+xml';
+  bool isSupport(AssetType asset) {
+    return asset.mime == 'image/svg+xml' || asset.extension == '.vec';
+  }
 
   @override
   bool get isConstConstructor => true;
