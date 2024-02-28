@@ -15,7 +15,10 @@ executables:
 
 dependencies:
   flutter_gen_core:
-    path: ../core
+    git:
+      url: https://github.com/vm-px/flutter_gen
+      path: packages/core
+      ref: vector_graphics_support
   args: ^2.0.0
 
 dev_dependencies:
